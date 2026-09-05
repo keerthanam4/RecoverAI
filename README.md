@@ -1,72 +1,199 @@
 # RecoverAI — AI Revenue Recovery Control Center
 
-### Razorpay Buildathon 2026 — Track 03: AI Revenue Recovery
+**Razorpay Buildathon 2026 — Track 03: AI Revenue Recovery**
 
-RecoverAI is an AI-powered revenue recovery control center that identifies at-risk payment transactions, predicts recovery probability, estimates expected recoverable value, diagnoses failure or abandonment patterns, and selects the safest recovery strategy.
-
-It combines **machine learning, policy-based decisioning, bounded execution, human escalation, stopping rules, and auditability** into a single recovery workflow.
+RecoverAI is an AI-powered revenue recovery control center that predicts payment recovery probability, diagnoses failure patterns, selects the safest recovery strategy, and governs execution through deterministic policy controls.
 
 > **AI decides. Policy governs. Execution is bounded.**
 
 ---
 
-## 🎯 Problem
+## Features 🚀
 
-Payment failures and checkout abandonment create revenue leakage.
-
-A failed transaction should not always trigger the same action. Blindly retrying payments can create unnecessary attempts, while stopping too early can leave recoverable revenue untouched.
-
-A revenue recovery system therefore needs to answer:
-
-- Which transactions are actually worth recovering?
-- How likely is each transaction to recover?
-- How much revenue could realistically be recovered?
-- Should the system retry, remind, send a payment link, stop, or escalate?
-- When should AI be prevented from acting automatically?
-- Can every decision be explained and audited?
-
-RecoverAI addresses these questions through an end-to-end AI-assisted recovery workflow.
+- ML-based recovery probability prediction
+- Expected recoverable value estimation
+- AI-powered failure diagnosis
+- Automated recovery strategy selection
+- Policy-based execution authorization
+- Bounded Razorpay Payment Link execution
+- Human escalation for high-risk cases
+- Stop rules for low-probability recovery opportunities
+- Idempotent recovery execution
+- Execution blocking for incompatible actions
+- Complete recovery execution audit trail
+- Recovery performance and strategy evaluation
 
 ---
 
-# 💡 Solution
+## What It Solves 🎯
 
-RecoverAI transforms raw transaction data into a prioritized and policy-governed recovery plan.
+Payment failures and checkout abandonment create revenue leakage.
 
-The system:
+RecoverAI determines **what should happen next** for each recovery opportunity instead of applying the same recovery action to every transaction.
 
-1. Identifies failed and abandoned transactions.
-2. Predicts recovery probability using a trained ML model.
-3. Calculates expected recoverable revenue.
-4. Prioritizes recovery opportunities by expected value.
-5. Diagnoses the transaction context.
-6. Applies deterministic policy rules to the AI recommendation.
-7. Selects a recovery strategy.
-8. Blocks actions that violate execution policy.
-9. Supports human escalation for higher-risk cases.
-10. Executes eligible `PAYMENT_LINK` recovery through Razorpay.
-11. Maintains an execution audit trail.
-12. Evaluates recovery performance across the dataset.
+The system balances:
 
-This creates an end-to-end recovery workflow:
+- Recovery potential
+- Transaction value
+- Failure reason
+- Customer history
+- Retry history
+- Checkout abandonment
+- Operational risk
+- Human-review requirements
+
+---
+
+## Recovery Workflow 🔄
 
 ```text
-Transaction
-    ↓
-Risk Identification
-    ↓
+Transaction Data
+      ↓
+Feature Engineering
+      ↓
 ML Recovery Prediction
-    ↓
-Expected Recovery Value
-    ↓
+      ↓
+Recovery Probability
+      ↓
 AI Diagnosis
-    ↓
+      ↓
+AI Decision Engine
+      ↓
 Policy Evaluation
-    ↓
+      ↓
 Recovery Strategy
-    ↓
+      ↓
 Bounded Execution / Human Escalation / Stop
-    ↓
+      ↓
 Audit Trail
-    ↓
+      ↓
 Evaluation & Monitoring
+```
+---
+
+## Recovery Strategies 🎯
+
+RecoverAI can select five recovery outcomes:
+
+| Strategy | Purpose |
+|---|---|
+| `RETRY` | Retry recoverable payment failures |
+| `PAYMENT_LINK` | Create a payment link for abandoned or recoverable payments |
+| `REMINDER` | Send a recovery reminder without executing payment recovery |
+| `STOP` | Stop recovery attempts when probability or policy conditions indicate low value |
+| `ESCALATE` | Route high-risk or high-value cases for human intervention |
+
+---
+
+## Policy & Safety 🛡️
+
+RecoverAI separates **AI recommendation** from **execution authorization**.
+
+```text
+AI Recommendation
+      ↓
+Policy Gate
+      ↓
+Execution Authorization
+      ↓
+Bounded Recovery Action
+      ↓
+Audit Trail
+
+The execution layer does not blindly execute the AI recommendation.
+
+Actions must satisfy deterministic policy constraints, and incompatible execution requests are blocked.
+
+Recommendation ≠ Authorization
+
+This ensures that AI can recommend an action without automatically gaining unrestricted execution authority.
+```
+
+---
+
+## Tech Stack
+
+- **Frontend:** React, Vite, JavaScript, CSS
+- **Backend:** Python, FastAPI
+- **Machine Learning:** Scikit-learn
+- **AI Decisioning:** Recovery decision engine with policy-based governance
+- **Payments:** Razorpay APIs / Razorpay Payment Links
+- **Data & Evaluation:** Transaction dataset and recovery evaluation pipeline
+
+---
+
+## Project Structure
+
+```text
+RecoverAI/
+├── backend/
+│   ├── api.py
+│   ├── execute_one_recovery.py
+│   ├── payment_link.py
+│   ├── razorpay_client.py
+│   └── recovery_executor.py
+│
+├── frontend/
+│   └── src/
+│       ├── App.jsx
+│       ├── App.css
+│       ├── index.css
+│       └── main.jsx
+│
+├── data/
+├── requirements.txt
+└── README.md
+```
+
+## Getting Started
+
+### Prerequisites
+
+- Python 3.10+
+- Node.js and npm
+- Razorpay test-mode credentials for Payment Link execution
+
+### Installation
+
+#### 1. Clone the repository
+
+```bash
+git clone https://github.com/keerthanam4/RecoverAI.git
+cd RecoverAI
+npm install
+cd ..
+```
+
+### Environment Configuration
+
+Configure Razorpay test-mode credentials as required by the application.
+
+```env
+RAZORPAY_KEY_ID=your_key_id
+RAZORPAY_KEY_SECRET=your_key_secret
+```
+
+### Running the Application
+
+#### Start the backend
+
+```bash
+uvicorn backend.api:app --reload
+```
+
+#### Start the frontend
+
+```bash
+cd frontend
+npm run dev
+```
+
+The frontend will be available through the Vite development server.
+
+---
+
+## Core Principle
+
+> **AI decides. Policy governs. Execution is bounded.**
+
+Every recovery action is designed to be **predictable, controlled, explainable, and auditable**.
