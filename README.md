@@ -1,103 +1,72 @@
-# RecoverAI
+# RecoverAI — AI Revenue Recovery Control Center
 
-### AI-Powered Revenue Recovery Control Center
+### Razorpay Buildathon 2026 — Track 03: AI Revenue Recovery
 
-RecoverAI is an AI-driven revenue recovery agent designed to identify failed or abandoned payment opportunities, estimate the probability of successful recovery, and select the safest recovery strategy under explicit policy controls.
+RecoverAI is an AI-powered revenue recovery control center that identifies at-risk payment transactions, predicts recovery probability, estimates expected recoverable value, diagnoses failure or abandonment patterns, and selects the safest recovery strategy.
 
-Built for the **Razorpay AI Buildathon — Track 03: AI Revenue Recovery**.
+It combines **machine learning, policy-based decisioning, bounded execution, human escalation, stopping rules, and auditability** into a single recovery workflow.
 
----
-
-## 🚀 The Problem
-
-Payment failures and abandoned checkouts create significant revenue leakage for businesses.
-
-A failed payment should not always trigger the same response.
-
-- A temporary network failure may justify a controlled retry.
-- An insufficient-funds failure may require a customer reminder.
-- An abandoned checkout may be better recovered through a payment link.
-- A low-confidence or high-risk case may require human review.
-- Some transactions should be stopped rather than repeatedly contacted or retried.
-
-RecoverAI addresses this decision-making problem by combining machine learning, transaction signals, expected recovery value, and policy governance into a single recovery workflow.
+> **AI decides. Policy governs. Execution is bounded.**
 
 ---
 
-## 💡 The Solution
+## 🎯 Problem
 
-RecoverAI follows a policy-governed AI decision pipeline:
+Payment failures and checkout abandonment create revenue leakage.
 
-**Transaction Signal → AI Prediction → Policy Gate → Recovery Action**
+A failed transaction should not always trigger the same action. Blindly retrying payments can create unnecessary attempts, while stopping too early can leave recoverable revenue untouched.
 
-For every recovery opportunity, the system:
+A revenue recovery system therefore needs to answer:
 
-1. Analyzes transaction and failure signals.
-2. Estimates recovery probability.
-3. Calculates expected recoverable value.
-4. Diagnoses the likely failure condition.
-5. Selects a recovery strategy.
-6. Applies policy constraints before execution.
-7. Determines whether human review is required.
-8. Records the decision and execution outcome.
+- Which transactions are actually worth recovering?
+- How likely is each transaction to recover?
+- How much revenue could realistically be recovered?
+- Should the system retry, remind, send a payment link, stop, or escalate?
+- When should AI be prevented from acting automatically?
+- Can every decision be explained and audited?
 
-The objective is not simply to maximize retries.
-
-The objective is to maximize **recoverable revenue while minimizing unnecessary or risky interventions**.
+RecoverAI addresses these questions through an end-to-end AI-assisted recovery workflow.
 
 ---
 
-## 🧠 Recovery Strategies
+# 💡 Solution
 
-RecoverAI supports multiple governed recovery actions:
+RecoverAI transforms raw transaction data into a prioritized and policy-governed recovery plan.
 
-| Strategy | Use Case |
-|---|---|
-| `RETRY` | Temporary or technical failures with sufficient recovery confidence |
-| `REMINDER` | Moderate-confidence cases where a non-invasive customer reminder is preferable |
-| `PAYMENT_LINK` | Abandoned or recoverable checkout situations |
-| `ESCALATE` | High-value or sensitive cases requiring human review |
-| `STOP` | Cases where recovery confidence is too low for intervention |
+The system:
 
-The policy engine acts as a safety layer between AI recommendations and execution.
+1. Identifies failed and abandoned transactions.
+2. Predicts recovery probability using a trained ML model.
+3. Calculates expected recoverable revenue.
+4. Prioritizes recovery opportunities by expected value.
+5. Diagnoses the transaction context.
+6. Applies deterministic policy rules to the AI recommendation.
+7. Selects a recovery strategy.
+8. Blocks actions that violate execution policy.
+9. Supports human escalation for higher-risk cases.
+10. Executes eligible `PAYMENT_LINK` recovery through Razorpay.
+11. Maintains an execution audit trail.
+12. Evaluates recovery performance across the dataset.
 
----
-
-## 🏗️ System Architecture
+This creates an end-to-end recovery workflow:
 
 ```text
-                    ┌──────────────────────┐
-                    │     Transaction      │
-                    │       Signals        │
-                    └──────────┬───────────┘
-                               │
-                               ▼
-                    ┌──────────────────────┐
-                    │    Recovery Model    │
-                    │                      │
-                    │ Recovery Probability │
-                    │ Expected Recovery    │
-                    └──────────┬───────────┘
-                               │
-                               ▼
-                    ┌──────────────────────┐
-                    │    Policy Engine     │
-                    │                      │
-                    │ Risk + Thresholds    │
-                    │ Governance Rules     │
-                    └──────────┬───────────┘
-                               │
-                               ▼
-                    ┌──────────────────────┐
-                    │   Recovery Agent     │
-                    │                      │
-                    │ Retry / Reminder /   │
-                    │ Payment Link /       │
-                    │ Escalate / Stop      │
-                    └──────────┬───────────┘
-                               │
-                               ▼
-                    ┌──────────────────────┐
-                    │ Recovery Executor    │
-                    │      + Audit         │
-                    └──────────────────────┘
+Transaction
+    ↓
+Risk Identification
+    ↓
+ML Recovery Prediction
+    ↓
+Expected Recovery Value
+    ↓
+AI Diagnosis
+    ↓
+Policy Evaluation
+    ↓
+Recovery Strategy
+    ↓
+Bounded Execution / Human Escalation / Stop
+    ↓
+Audit Trail
+    ↓
+Evaluation & Monitoring
